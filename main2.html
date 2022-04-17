@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+div{
+    width:300px;
+    margin: 5px auto;
+    text-align:center;
+}
+#div2{
+    text-align:left;
+}
+.error{
+    background-color: rgba(255, 0, 0, 0.027);
+    box-shadow: -5px -5px 20px rgb(255, 0, 0);
+}
+label{
+    margin-left:50px;
+}
+input{
+    margin:5px;
+}
+</style>
+<body>
+    <!-- onsubmit="return walidator()" -->
+    <div>
+        <fieldset>
+            <legend>Wprowadź dane</legend>
+        <form action="main.php" method="POST" id="form1" >
+            <input type="text" name="imie" id="imie" placeholder="Imię"><br>
+            <input type="text" name="nazwisko" id="nazwisko" placeholder="Nazwisko"><br>
+            <input type="number" name="wiek" placeholder="Wiek (5-100)" id="wiek"><br>
+            <input type="number" name="pesel" id="pesel" placeholder="PESEL" ><br>
+            <div id="div2">
+            <label><input type="radio" name="szkoła" value="Technikum" checked>Technikum</label><br>
+            <label><input type="radio" name="szkoła" value="Liceum">Liceum</label><br>
+            <label><input type="radio" name="szkoła" value="Szkoła podstawowa">Szkoła podstawowa</label><br>
+            <label><input type="radio" name="szkoła" value="Gimnazjum">Gimnazjum</label><br>
+            <label><input type="checkbox" name="prog">Interesuję sie programowaniem</label><br>
+            </div>
+            <input type="button" value="Wyślij" id="sub">
+        </form>
+        <p id="error"></p>
+    </fieldset>
+    </div>
+    <script>
+        function walidator()
+        {
+            var imie=document.getElementById('imie').value;
+            var nazwisko=document.getElementById('nazwisko').value;
+            var pesel=document.getElementById('pesel').value;
+            var wiek=document.getElementById('wiek').value;
+            var error= document.getElementById('error');
+            var form=document.getElementById('form1');
+            var reg1=new RegExp("^[A-Z]");
+            var wynikImie= reg1.test(imie);
+            var wynikNazw= reg1.test(nazwisko);
+            var reg2= new RegExp("^[0-9]{11}$");
+            var wynikPesel= reg2.test(pesel);
+            if(wynikImie==true && wynikNazw==true && wynikPesel==true && (wiek>=5 && wiek<=100))
+            {
+                form.submit();
+            }
+            else{
+                error.classList.add('error');
+                error.innerHTML+=("Niepoprawne dane.<br>");
+                if(wynikImie==false)
+                {
+                    error.innerHTML+=("Imię powinno zaczynac się dużą literą.<br>")
+                }
+                if(wynikNazw==false)
+                {
+                    error.innerHTML+=("Nazwisko powinno zaczynac się dużą literą.<br>");
+                }
+                if(wynikPesel==false)
+                {
+                    error.innerHTML+=("PESEL powinien mieć dokładnie 11 cyfr.<br>");
+                }
+                if((wiek<5 || wiek>100))
+                {
+                    error.innerHTML+=("Przyjmujemy tylko osoby w wieku 5-100 lat, SORRY :)<br><br>");
+                }
+            }
+
+        }
+        var btn1=document.getElementById('sub');
+        btn1.addEventListener('click', walidator);
+    </script>
+</body>
+</html>
